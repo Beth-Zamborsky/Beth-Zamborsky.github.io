@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Beth Zamborsky — Artist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #111111;
+      --red: #c0121a;
+      --white: #ffffff;
+      --off-white: #f9f7f5;
+      --light-gray: #ebebeb;
+      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--light-gray);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      color: var(--black);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--red); }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      position: relative;
+      transition: color var(--transition);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--red);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover { color: var(--red); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── HERO ── */
+    #home {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .parallax-bg {
+      position: absolute;
+      inset: -20%;
+      background: url("https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/A%20Warm%20Winter,%20watercolor,%202023.JPG?raw=true") center/cover no-repeat;
+      filter: grayscale(30%);
+      will-change: transform;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.15) 0%,
+        rgba(255,255,255,0.55) 60%,
+        rgba(255,255,255,0.85) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      text-align: center;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 14vw, 13rem);
+      line-height: 0.9;
+      color: var(--black);
+      letter-spacing: 0.04em;
+      opacity: 0;
+      animation: fadeUp 1s 0.55s forwards;
+    }
+    .hero-name span { color: var(--red); }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--black);
+      letter-spacing: 0.06em;
+      margin-top: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.8s forwards;
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 1s 1.2s forwards;
+    }
+    .scroll-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--red), transparent);
+      animation: lineGrow 1.5s 1.5s ease-in-out infinite;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes lineGrow {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50%       { transform: scaleY(0.5); opacity: 0.4; }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 7rem 6vw;
+    }
+    section:nth-child(even) { background: var(--off-white); }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+    .section-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      color: var(--red);
+      letter-spacing: 0.1em;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--black);
+      letter-spacing: 0.06em;
+      line-height: 1;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--light-gray);
+      margin-bottom: 0.4rem;
+    }
+
+    /* ── GALLERY GRID ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--light-gray);
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      filter: grayscale(20%);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.06);
+      filter: grayscale(0%);
+    }
+    .gallery-caption {
+      position: absolute;
+      inset: 0;
+      background: rgba(17,17,17,0.72);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .gallery-item:hover .gallery-caption { opacity: 1; }
+    .gallery-caption p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--white);
+      line-height: 1.4;
+    }
+    .gallery-caption .cap-accent {
+      display: block;
+      width: 30px;
+      height: 2px;
+      background: var(--red);
+      margin-bottom: 0.6rem;
+    }
+    .expand-icon {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      width: 28px; height: 28px;
+      border: 1px solid rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .gallery-item:hover .expand-icon { opacity: 1; }
+    .expand-icon svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2; }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(17,17,17,0.96);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #lightbox.active { display: flex; }
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
+    #lightbox-close {
+      position: absolute;
+      top: 1.5rem; right: 2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: white;
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+    #lightbox-close:hover { color: var(--red); }
+    #lightbox-caption {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── ABOUT ── */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-aside {
+      position: sticky;
+      top: 6rem;
+    }
+    .about-aside-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      color: var(--red);
+      margin-bottom: 1rem;
+    }
+    .about-rule {
+      width: 40px;
+      height: 3px;
+      background: var(--black);
+      margin-bottom: 1.5rem;
+    }
+    .about-aside p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: #555;
+      line-height: 1.7;
+    }
+    .statement-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.1em;
+      color: var(--black);
+      margin-bottom: 2rem;
+    }
+    .statement-title span { color: var(--red); }
+    .statement-body p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      line-height: 1.9;
+      color: #222;
+      margin-bottom: 1.8rem;
+    }
+    .statement-body p:last-child { margin-bottom: 0; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--black); }
+    #contact .section-title { color: var(--white); }
+    #contact .section-rule { background: #333; }
+    #contact .section-number { color: var(--red); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .contact-card {
+      border: 1px solid #2a2a2a;
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: border-color var(--transition);
+    }
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--red);
+      transition: width var(--transition);
+    }
+    .contact-card:hover { border-color: #444; }
+    .contact-card:hover::before { width: 100%; }
+    .contact-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1rem;
+    }
+    .contact-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      color: var(--white);
+      word-break: break-all;
+    }
+    .contact-value a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .contact-value a:hover { color: var(--red); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid #1e1e1e;
+      text-align: center;
+      padding: 2rem;
+    }
+    footer p {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #444;
+    }
+    footer span { color: var(--red); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      section { padding: 5rem 5vw; }
+      .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .about-aside { position: static; }
+    }
+    @media (max-width: 520px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">Beth <span>Zamborsky</span></a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#fine-art">Fine Art</a></li>
+    <li><a href="#scenic-art">Scenic Art</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <div class="parallax-bg" id="parallaxBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Artist &amp; Educator</p>
+    <h1 class="hero-name">Beth<br/><span>Zamborsky</span></h1>
+    <p class="hero-sub">Fine Art · Scenic Art · Large-Scale Installation</p>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- FINE ART -->
+<section id="fine-art">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2 class="section-title">Fine Art</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="gallery-grid" id="fineArtGrid"></div>
+</section>
+
+<!-- SCENIC ART -->
+<section id="scenic-art">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2 class="section-title">Scenic Art</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="gallery-grid" id="scenicArtGrid"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2 class="section-title">About Me</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="about-layout">
+    <div class="about-aside">
+      <p class="about-aside-label">Artist Statement</p>
+      <div class="about-rule"></div>
+      <p>Painter. Scenic Artist.<br/>Educator. Professor.</p>
+    </div>
+    <div class="statement-body">
+      <div class="statement-title">Artist <span>Statement</span></div>
+      <p>I am intensely interested in the ways that man-made structures can change, through time, weather, and use, into increasingly unique places with increasingly organic surface textures and colors. I am also interested in exploring human interpretations of visual symbols and colors and how the interpretation of these non-verbal cues changes over time.</p>
+      <p>I have an immense amount of experience working on large scale pieces that are designed for specific audiences and spaces. Some examples of these are theatrical scenic pieces for all manner of productions and permanent museum installations, exhibits and murals. As well, I have been a Professor for more than 20 years and am invested in helping students discover who they are as artists.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2 class="section-title">Contact Me</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <p class="contact-label">Email</p>
+      <p class="contact-value"><a href="mailto:bethz@andrew.cmu.edu">bethz@andrew.cmu.edu</a></p>
+    </div>
+    <div class="contact-card">
+      <p class="contact-label">Instagram</p>
+      <p class="contact-value"><a href="https://www.instagram.com/bethzamborsky/?hl=en" target="_blank" rel="noopener noreferrer">@bethzamborsky</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2024 <span>Beth Zamborsky</span> — All Rights Reserved</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span id="lightbox-close">✕ CLOSE</span>
+  <img id="lightbox-img" src="" alt="" />
+  <p id="lightbox-caption"></p>
+</div>
+
+<script>
+  /* ── Parallax ── */
+  const bg = document.getElementById('parallaxBg');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight) {
+      bg.style.transform = `translateY(${y * 0.35}px)`;
+    }
+  });
+
+  /* ── Nav shadow on scroll ── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* ── Gallery data ── */
+  const fineArtItems = [
+    { src: 'C:\Users\bethz\Contacts\Desktop\moms website files\Actual Website\Pics 4 website\One of six origional mural designs for Frontier Texas! Museum, Abilene, Texas.JPG', caption: 'Untitled Study in Texture — oil on canvas, 2023' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/BLUE%20HOUSE,%20oil,%202020.png?raw=true', caption: 'BLUE HOUSE — Oil' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/Bound%20Saplings,%20watercolor,%202023.JPG?raw=true', caption: 'Bound Saplings — Watercolor' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/Escape%20To%20New%20York,%20acrylic,%202021.JPG?raw=true', caption: 'Escape To New York — Oil' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/FOREBEARS,%20watercolor,%20PWS%20juried%20award%20winner,%202024.JPG?raw=true', caption: 'FOREBEARS — Watercolor' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/Limestone%20Mine,%20watercolor,%20PWS%20juried%20selection,%202025.jpg?raw=true', caption: 'Limestone Mine — oil &amp; resin, 2023' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/Marina%20Amsterdam,watercolor,%20PWS%20juried%20award%20winner,%202024.JPG?raw=true', caption: 'Marina Amsterdam— Watercolor' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/Night%20Outside%20My%20Window,%20PWS%20juried%20selection,%202023.png?raw=true', caption: 'Night Outside My Window — Watercolor' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/RECOVER,%20acrylic,%202025.JPG?raw=true', caption: 'Recover — Acrylic' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/RED%20WALL,%20watercolor,%202022.JPG?raw=true', caption: 'RED WALL — Watercolor' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/RR%20Bridge,%20acrylic,%202026.JPG?raw=true', caption: 'Bridge — Acrylic, 2023' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/South%20Side%20Snow%20and%20Streetlight,%20acrylic,%202021.JPG?raw=true', caption: 'South Side Snow and Streetlight — Acrylic' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/A%20Warm%20Winter,%20watercolor,%202023.JPG?raw=true', caption: 'A Warm Winter — Watercolor' },
+    { src: 'https://github.com/Beth-Zamborsky/Beth-Zamborsky.github.io/blob/main/Fine%20Art%20for%20website/Streetlights,%20watercolor,%202022.jpg?raw=true', caption: 'Streetlights — Watercolor' },
+  ];
+
+  const scenicArtItems = [
+    { src: 'https://placehold.co/800x600/c0bbb3/111111?text=Scenic+Art+01', caption: 'Theatrical Set — proscenium backdrop, 2022' },
+    { src: 'https://placehold.co/800x600/b8b3ab/111111?text=Scenic+Art+02', caption: 'Museum Installation — permanent mural, 2021' },
+    { src: 'https://placehold.co/800x600/ccc8c0/111111?text=Scenic+Art+03', caption: 'Opera Production — large-scale scenic drop, 2023' },
+    { src: 'https://placehold.co/800x600/d0cbc3/111111?text=Scenic+Art+04', caption: 'Exhibit Design — environmental painting, 2022' },
+    { src: 'https://placehold.co/800x600/c8c3bb/111111?text=Scenic+Art+05', caption: 'Civic Mural — exterior installation, 2020' },
+    { src: 'https://placehold.co/800x600/bab5ad/111111?text=Scenic+Art+06', caption: 'Dance Production — cyclorama treatment, 2023' },
+  ];
+
+  function buildGallery(items, containerId) {
+    const grid = document.getElementById(containerId);
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'gallery-item';
+      div.innerHTML = `
+        <img src="${item.src}" alt="${item.caption}" loading="lazy" />
+        <div class="gallery-caption">
+          <div>
+            <span class="cap-accent"></span>
+            <p>${item.caption}</p>
+          </div>
+        </div>
+        <div class="expand-icon">
+          <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </div>
+      `;
+      div.addEventListener('click', () => openLightbox(item.src, item.caption));
+      grid.appendChild(div);
+    });
+  }
+
+  buildGallery(fineArtItems, 'fineArtGrid');
+  buildGallery(scenicArtItems, 'scenicArtGrid');
+
+  /* ── Lightbox ── */
+  const lightbox = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lightbox-img');
+  const lbCap    = document.getElementById('lightbox-caption');
+  const lbClose  = document.getElementById('lightbox-close');
+
+  function openLightbox(src, caption) {
+    lbImg.src = src;
+    lbCap.textContent = caption.replace(/&amp;/g, '&');
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
